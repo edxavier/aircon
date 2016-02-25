@@ -89,6 +89,8 @@ def mantto(exec_type):
         click.echo(click.style('Especifique el archivo con el listado de hosts', fg='blue', bold=True, reverse=True))
         from_file()
     else:
+        click.echo(click.style('=> Seleccionado modo de ejecucion por rango', fg='magenta', bold=True, reverse=True))
+        click.echo(click.style('Especifique el rango de hosts', fg='blue', bold=True, reverse=True))
         use_range()
 
     for color in all_colors:
