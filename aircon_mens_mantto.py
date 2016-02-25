@@ -30,7 +30,7 @@ def validate_file(ctx, param, value):
 
 
 @click.command()
-@click.option('--source-file', default='/home/edx/heroku', help="Archivo origen", prompt=True,
+@click.option('--source-file', default='/home/server/operational', help="Archivo origen", prompt=True,
               callback=validate_file)
 def from_file(source_file):
     """Simple program that greets NAME for a total of COUNT times."""
