@@ -188,8 +188,11 @@ def exec_mantto():
         shutil.copy(temp_file_path, home)
 
     os.remove(temp_file_path)
+    click.clear()
     click.echo(click.style('MANTENIMIENTO FINALIZADO'.center(80, '*'), fg='green', bold=True, reverse=True))
+    click.echo(click.style('las pruebas de ping se realizan con 10.161.80.205 (Servidor NTP)'.center(80, '*'), fg='green', bold=True, reverse=True))
     raw_input(t.fgLightcyan + t.bgBlack + "Presione cualquier tecla para continuar..." + t.ENDC)
+    click.clear()
 
 
 if __name__ == "__main__":
