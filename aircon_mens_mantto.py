@@ -12,8 +12,6 @@ from time import sleep
 from utils.helper_classes import *
 from utils.functions import *
 
-from progress.bar import Bar
-
 from utils.helper_classes import Pyng, TermColors
 
 __author__ = 'Eder Xavier Rojas'
