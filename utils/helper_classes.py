@@ -135,9 +135,9 @@ class Pysntp(object):
                 utc_dt = datetime.datetime.utcfromtimestamp(t)
                 return utc_dt
             else:
-                print 'No Response received from:', address
-        except socket.timeout:
-            print 'No Response received'
+                return None
+        except socket.timeout, e:
+            return None            
 
 
 class Pymail(object):

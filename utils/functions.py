@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import select
-
+import click
 __author__ = 'Eder Xavier Rojas'
 # Creado  07-09-15
 from datetime import timedelta
@@ -121,6 +121,7 @@ def get_sync_verification(host="127.0.0.1", ssh=None):
         # Send the command (non-blocking)
     stdin, stdout, stderr = ssh.exec_command("date '+%Y-%m-%d %H:%M:%S %Z'")
     sntp = Pysntp(direccion="10.160.80.205")
+
     # Wait for the command to terminate
     values = []
     for i, line in enumerate(stdout):
@@ -130,12 +131,18 @@ def get_sync_verification(host="127.0.0.1", ssh=None):
         values.append(line)
     local = datetime.datetime.strptime(values[0],'%Y-%m-%d %H:%M:%S %Z')
     sntp_time = sntp.get_time()
-    dif = local - sntp_time
-    sec = dif.total_seconds()
-    if sec >=30 or sec <=-30:
-        return sec, local, sntp_time, "NO"
+    if(sntp_time is None):
+        click.secho("Fallo verificacion de sincronia con %s" % sntp._direccion, bg='white', fg='red', bold=True, reverse=True)
+    sntp_time = sntp.get_time()
+    if(sntp_time is not None):
+        dif = local - sntp_time
+        sec = dif.total_seconds()
+        if sec >=30 or sec <=-30:
+            return sec, local, sntp_time, "NO"
+        else:
+            return sec, local, sntp_time, "OK"
     else:
-        return sec, local, sntp_time, "OK"
+        return -1, local, sntp_time, "NO VERIFICADO"
 
 def get_ping_verification(host="127.0.0.1", ssh=None):
         # Send the command (non-blocking)

@@ -1,11 +1,11 @@
 #!/usr/bin/python
 import os, stat
 from os.path import expanduser
-import click
+import click, traceback
 import csv
 import paramiko
 import shutil
-import datetime
+from datetime import datetime as dtime
 import getpass
 from tqdm import tqdm
 from time import sleep
@@ -113,7 +113,7 @@ def exec_mantto():
 
     mylist = ['Fecha', 'ID','Posicion', 'Memoria Total','RAM Libre', 'Swap Libre','Uptime','Uso de CPU','Carga de CPU']
     mylist += ['Procesos','Uso de Disco en /','Sincronizacion','Diferencia tiempo','Ping LAN1', 'Ping LAN2']
-    date = datetime.datetime.now()
+    date = dtime.now()
     file_name = "mantto_mensual_aricon_" + date.strftime("%d%m%Y") + ".csv"
     temp_file_path = "/tmp/" + file_name
     succes_rate = 0
@@ -131,7 +131,7 @@ def exec_mantto():
                     ssh.connect(host, username="root", password="root")
                     #  print "Connected to %s" % host
                     id = str(host).split('.')[3]
-                    now = datetime.datetime.now()
+                    now = dtime.now()
                     fecha = now.strftime("%d-%m-%y %H:%M")
                     t.msg(title="OBTENIENDO DATOS DE "+ host, message="")
                     ram, ram_free, swap = get_memory(host, ssh=ssh)
@@ -154,18 +154,20 @@ def exec_mantto():
                     succes_rate += 1
                     break
                 except paramiko.AuthenticationException:
-                    click.secho("Authentication failed when connecting to %s" % host, fg='red', bold=True, reverse=True)
+                    click.secho("Authentication failed when connecting to %s" % host, bg='white', fg='red', bold=True, reverse=True)
                     print ""
                     break
                 except Exception, e:
-                    click.secho("Could not SSH to %s, waiting for it to start" % host, fg='yellow', bold=True, reverse=True)
+                    click.secho("Could not SSH to %s, waiting for it to start" % host, bg='yellow', fg='black', bold=True, reverse=True)
+                    #traceback.print_exc(file=sys.stdout)
+                    print '-'*60   
                     print ""
                     it += 1
                     time.sleep(2)
 
                 # If we could not connect within time limit
                 if it == 4:
-                    click.secho("Could not connect to %s. Giving up!" % host, fg='red', bold=True, reverse=True)
+                    click.secho("Could not connect to %s. Giving up!" % host, bg='white', fg='red', bold=True, reverse=True)
                     break
     #if succes_rate > 0:
     home = expanduser("~")
