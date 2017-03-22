@@ -114,7 +114,12 @@ def exec_mantto():
     mylist = ['Fecha', 'ID','Posicion', 'Memoria Total','RAM Libre', 'Swap Libre','Uptime','Uso de CPU','Carga de CPU']
     mylist += ['Procesos','Uso de Disco en /','Sincronizacion','Diferencia tiempo','Ping LAN1', 'Ping LAN2']
     date = dtime.now()
-    file_name = "mantto_mensual_aricon_" + date.strftime("%d%m%Y") + ".csv"
+    if click.confirm(click.style('Mantenimiento SIMULACION?',bg='black', fg='green', reverse=True)):
+        sector = "_SIM_"
+    else:
+        click.echo(click.style('Proceder como Mantenimiento OPERACIONAL',bg='black', fg='green', reverse=True))
+        sector = "_OPE_"        
+    file_name = "mantto_mensual_aricon"+ sector + date.strftime("%d%m%Y") + ".csv"
     temp_file_path = "/tmp/" + file_name
     succes_rate = 0
     with open(temp_file_path, 'wb') as result_file:
