@@ -114,7 +114,12 @@ def exec_mantto():
     mylist = ['Fecha', 'ID','Posicion', 'Memoria Total','RAM Libre', 'Swap Libre','Uptime','Uso de CPU','Carga de CPU']
     mylist += ['Procesos','Uso de Disco en /','Sincronizacion','Diferencia tiempo','Ping LAN1', 'Ping LAN2']
     date = dtime.now()
-    file_name = "mantto_mensual_aricon_" + date.strftime("%d%m%Y") + ".csv"
+    if click.confirm(click.style('Mantenimiento SIMULACION?',bg='black', fg='green', reverse=True)):
+        sector = "_SIM_"
+    else:
+        click.echo(click.style('Proceder como Mantenimiento OPERACIONAL',bg='black', fg='green', reverse=True))
+        sector = "_OPE_"        
+    file_name = "mantto_mensual_aricon"+ sector + date.strftime("%d%m%Y") + ".csv"
     temp_file_path = "/tmp/" + file_name
     succes_rate = 0
     with open(temp_file_path, 'wb') as result_file:
@@ -129,7 +134,7 @@ def exec_mantto():
                     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
                     #ssh.connect(host)
                     ssh.connect(host, username="root", password="root")
-                    #  print "Connected to %s" % host
+                    print "Connected to %s" % host
                     id = str(host).split('.')[3]
                     now = dtime.now()
                     fecha = now.strftime("%d-%m-%y %H:%M")
@@ -159,7 +164,7 @@ def exec_mantto():
                     break
                 except Exception, e:
                     click.secho("Could not SSH to %s, waiting for it to start" % host, bg='yellow', fg='black', bold=True, reverse=True)
-                    #traceback.print_exc(file=sys.stdout)
+                    traceback.print_exc(file=sys.stdout)
                     print '-'*60   
                     print ""
                     it += 1
@@ -174,18 +179,18 @@ def exec_mantto():
     #cambiar permisos para q todos puedan modificarlo
     os.chmod(temp_file_path, stat.S_IRWXO)
 
-    if click.confirm(click.style('Desea enviar copia del resultado a bincer@eaai.com.ni?', fg='green', reverse=True)):
+    """if click.confirm(click.style('Desea enviar copia del resultado a bincer@eaai.com.ni?', fg='green', reverse=True)):
         click.echo(click.style('=> Enviando...', fg='blue', bold=True, reverse=True))
         mail = Pymail()
         file = temp_file_path
-        mail.send(file=file, dest='bincer@eaai.com.ni')
+        mail.send(file=file, dest='bincer@eaai.com.ni')"""
 
 
-    if click.confirm(click.style('Desea enviar copia del resultado a stecnica@eaai.com.ni?', fg='green', reverse=True)):
+    """if click.confirm(click.style('Desea enviar copia del resultado a stecnica@eaai.com.ni?', fg='green', reverse=True)):
         mail = Pymail()
         click.echo(click.style('=> Enviando...', fg='blue', bold=True, reverse=True))
         file = temp_file_path
-        mail.send(file=file, dest='stecnica@eaai.com.ni')
+        mail.send(file=file, dest='stecnica@eaai.com.ni')"""
 
     if click.confirm(click.style('Desea guardar una copia local?', fg='green', reverse=True)):
         click.echo(click.style('=> Copia guardada en %s ' % home, fg='blue', bold=True, reverse=True))

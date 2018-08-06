@@ -112,8 +112,12 @@ def get_disk_usage(host="127.0.0.1", ssh=None):
         line = clear_multiple_spaces(line)
         values.append(line)
 
-    splited = str(values[2]).split()
-    percent = splited[len(splited)-2]
+    if len(values) > 2:
+    	splited = str(values[2]).split()
+    	percent = splited[len(splited)-2]
+    else:
+    	splited = str(values[1]).split()
+        percent = splited[len(splited)-2]
     return (percent)
 
 
