@@ -1,21 +1,17 @@
 #!/usr/bin/python
 import datetime
-from email.mime.base import MIMEBase
+import mimetypes
 import os
 import smtplib
-import mimetypes
-from email import encoders
-from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from email import Encoders
-from email.utils import COMMASPACE, formatdate
 from os.path import basename
 
 __author__ = 'Eder Xavier Rojas'
 # Creado  07-08-15
 import subprocess
-import socket, struct, sys, time
+import socket, struct
+
 
 class TermColors(object):
     ENDC='\033[0m'
@@ -58,7 +54,8 @@ class TermColors(object):
 
     # your code
     def print_row(self,msg, status):
-        print "%-55s %-1s " % (msg, status)
+        #sprint "%-55s %-1s " % (msg, status)
+        pass
 
     def msg(self, message="", title=""):
         line = self.center(text="",fill='-')
@@ -94,7 +91,7 @@ class TermColors(object):
 
 
 
-class Pyng(object):
+class Ping(object):
     """Envio de mensajes icmp
         :param direccion: Especifique el IP o Hostname
     """
@@ -119,12 +116,13 @@ class Pysntp(object):
 
 
     def get_time(self):
-        TIME1970 = 2208988800L
+        TIME1970 = 2208988800
         # Thanks to F.Lundh
         client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         client.settimeout(2)
         data = '\x1b' + 47 * '\0'
-        client.sendto(data, (self._direccion, 123))
+
+        client.sendto(data.encode(), (self._direccion, 123))
         #client.sendto(data, ('10.160.80.205', 123))
 
         try:
@@ -136,7 +134,7 @@ class Pysntp(object):
                 return utc_dt
             else:
                 return None
-        except socket.timeout, e:
+        except socket.timeout as e:
             return None            
 
 
@@ -174,7 +172,7 @@ class Pymail(object):
 
             cli.sendmail(sender,receivers,msg.as_string())
 
-        except (socket.gaierror, socket.error, socket.herror, smtplib.SMTPException), e:
-            print e
+        except (socket.gaierror, socket.error, socket.herror, smtplib.SMTPException) as e:
+            print (e)
 
-print os.path.dirname(os.path.realpath(__file__))
+print (os.path.dirname(os.path.realpath(__file__)))
