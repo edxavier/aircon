@@ -59,7 +59,7 @@ def get_memory(host="127.0.0.1", ssh=None):
     ram = str(values[1]).split()
     swap = str(values[3]).split()
     free_ram_percent = (float(ram[3]) / float(ram[1])) * 100
-    return ram[1], ram[3]+" ("+"{0:.2f}".format(free_ram_percent)+"%)", swap[1]+"/"+ swap[3]
+    return ram[1], ram[3]+" ("+"{0:.2f}".format(free_ram_percent)+"%)", swap[3]
 
         #print "%d: %s" % (i, line)
 

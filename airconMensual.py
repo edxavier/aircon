@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 import sys
 import click
 import getpass
@@ -57,9 +57,8 @@ def leer_archivo(source_file):
 
 
 def ejecutar_mantenimiento():
-    resultados = ['Mem Total', 'Mem free', 'Swap free', 'Uptime', '%CPU',
-              'Carga CPU']
-    resultados += ['Procesos', 'Uso /', 'sda', 'sdb', 'Sinc.', 'Offset', 'LAN1', 'LAN2']
+    resultados = ['Mem Total', 'Mem free', 'Swap free', 'Uptime', '%CPU', 'Procesos']
+    resultados += ['Uso /', 'sda', 'sdb', 'Sinc.', 'LAN1', 'LAN2', 'Offset', 'Carga CPU']
 
     click.clear()
     click.secho('INICIANDO MANTENIMIENTO MENSUAL AIRCON 2100'.center(80, '_'), fg='white', bold=True, reverse=True)
@@ -79,7 +78,7 @@ def ejecutar_mantenimiento():
                     mylist.append(get_uptime(host=host, ssh=ssh))
                     mylist.append(get_cpu_usage(host=host, ssh=ssh))
                     lavg, procs = get_load_avg(host=host, ssh=ssh)
-                    mylist.append(lavg)
+                    #mylist.append(lavg)
                     mylist.append(procs)
                     mylist.append(get_disk_usage(host=host, ssh=ssh))
                     discoA, discoB = get_disk_health(host=host, ssh=ssh)
@@ -87,10 +86,11 @@ def ejecutar_mantenimiento():
                     mylist.append(discoB)
                     offset, local, server, status = get_sync_verification(host=host, ssh=ssh)
                     mylist.append(status)
-                    mylist.append(str(offset) + " seg")
                     if1, if2 = get_ping_verification(host=host, ssh=ssh)
                     mylist.append(if1)
                     mylist.append(if2)
+                    mylist.append(str(offset) + " seg")
+                    mylist.append(lavg)
                     ssh.close()
                     tabla.add_row(mylist)
                     print(tabla)
@@ -127,7 +127,7 @@ def mantenimiento(tipo):
     click.clear()
     if tipo == 'ope':
         click.echo(click.style('=> Seleccionado modo OPERACIONAL', fg='green', bold=True, reverse=True))
-        leer_archivo('./operational')
+        leer_archivo('/home/eradar/scripts/aircon/operational')
     else:
         click.secho('=> Seleccionado modo SIMULACION', fg='yellow', bold=True, reverse=True)
         leer_archivo('./simulation')
