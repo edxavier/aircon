@@ -127,7 +127,7 @@ def mantenimiento(tipo):
     click.clear()
     if tipo == 'ope':
         click.echo(click.style('=> Seleccionado modo OPERACIONAL', fg='green', bold=True, reverse=True))
-        leer_archivo('/home/eradar/scripts/aircon/operational')
+        leer_archivo('./operational')
     else:
         click.secho('=> Seleccionado modo SIMULACION', fg='yellow', bold=True, reverse=True)
         leer_archivo('./simulation')
